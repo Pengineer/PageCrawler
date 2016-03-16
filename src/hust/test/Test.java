@@ -34,12 +34,12 @@ import org.apache.http.util.EntityUtils;
 public class Test {
 	
 	private static String hostname = "isisn.nsfc.gov.cn";
-	private static int port = 80;
-	private static String scheme = "http";
+	private static int port = 443;
+	private static String scheme = "https";
 	
 	
 	public static void main(String[] args) throws Exception {
-		HttpClient client = Crawler.getHttpClient();
+		HttpClient client = Crawler.getHttpsClient();
 		
 		HttpGet request = new HttpGet("/egrantindex/funcindex/prjsearch-list");
 		HttpHost target = new HttpHost(hostname, port, scheme);
