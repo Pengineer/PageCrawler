@@ -45,31 +45,32 @@ public class Crawler {
 		return httpClient;
 	}
 
-	private static X509TrustManager tm = new X509TrustManager() {  
-		public void checkClientTrusted(X509Certificate[] xcs, String string) 
+	private static X509TrustManager tm = new X509TrustManager() {
+		public void checkClientTrusted(X509Certificate[] xcs, String string)
 				throws CertificateException {
 		}
 
 		public void checkServerTrusted(X509Certificate[] xcs, String string)  
-				throws CertificateException {  
-		}  
-  
-		public X509Certificate[] getAcceptedIssuers() {  
-			return null;  
-		}  
+				throws CertificateException {
+		}
+
+		public X509Certificate[] getAcceptedIssuers() {
+			return null;
+		}
 	};
 	
 	/**  
-	 * 获取一个针对https的HttpClient  
+	 * 获取一个针对https的HttpClient
+	 * SSLSocketFactory.ALLOW_ALL_HOSTNAME_VERIFIER：
+	 * 		The ALLOW_ALL HostnameVerifier essentially turns hostname verification off. This implementation is a no-op, 
+	 * 		and never throws the SSLException.
 	 */  
 	public static HttpClient getHttpsClient() throws KeyManagementException, NoSuchAlgorithmException {  
-		HttpClient httpclient = getHttpClient();  
-		SSLContext sslcontext = SSLContext.getInstance("TLS");  
-		sslcontext.init(null, new TrustManager[] { tm }, null);  
-		SSLSocketFactory ssf = new SSLSocketFactory(sslcontext,  
-				SSLSocketFactory.ALLOW_ALL_HOSTNAME_VERIFIER);  
-		httpclient.getConnectionManager().getSchemeRegistry()  
-				.register(new Scheme("https", 443, ssf));  
-		return httpclient;  
+		HttpClient httpclient = getHttpClient();
+		SSLContext sslcontext = SSLContext.getInstance("TLS");
+		sslcontext.init(null, new TrustManager[] { tm }, null);
+		SSLSocketFactory ssf = new SSLSocketFactory(sslcontext, SSLSocketFactory.ALLOW_ALL_HOSTNAME_VERIFIER); //关闭主机校验，允许连接所有主机
+		httpclient.getConnectionManager().getSchemeRegistry().register(new Scheme("https", 443, ssf));
+		return httpclient;
 	}
 }
